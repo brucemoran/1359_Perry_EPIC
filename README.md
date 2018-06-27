@@ -1,6 +1,6 @@
 # 1359_Perry_EPIC Array Analysis
 
-This project runs the EPIC array analysis for Silva et al. (in submission) 
+Run the EPIC array analysis for Silva et al. (in submission) 
 
 ## Getting started
 
