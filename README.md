@@ -25,5 +25,5 @@ You will need a copy of R installed, as well as required packages. These can be 
 ```
 install.packages("BiocManager")
 library("BiocManager")
-BiocManager::install("GenomicRanges", "RnBeads", "FDb.InfiniumMethylation.hg19", "tidyverse", "GGally", "magrittr", "pheatmap", "mgcv", "ggplot2", "readxl", "VennDiagram", "reshape2")
+BiocManager::install(c("GenomicRanges", "RnBeads", "FDb.InfiniumMethylation.hg19", "tidyverse", "GGally", "magrittr", "pheatmap", "mgcv", "ggplot2", "readxl", "VennDiagram", "reshape2"), update=TRUE, ask=FALSE)
 ```
