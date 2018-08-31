@@ -120,10 +120,9 @@ if(!file.exists(paste0(OUTDIR, "/set_patient-probe_EMRs.GRanges.RData"))){
           fil=c("forestgreen","black","darkred","yellow"))
    names(patGroupVennProbeList[[pg]]) <- c("hyper", "hypo")
 
-   ##distribution of T, U, S probes, not in benign
+   ##distribution of T, U, S probes
    #per tumour, plasma, urine
-
-   selpg <- c("probe", grep("Benign", grep(paste0("_", pg), names(betasitet), value=TRUE), invert=T, value=T))
+   selpg <- c("probe", grep(paste0("_", pg), names(betasitet), value=TRUE))
    selpg <- match(selpg,names(betasitet))
    tprobens <- match(c("n2","n23","n24","n234"), names(patGroupVennProbeList[[pg]][["hyper"]]))
    tprobeu <- unique(unlist(lapply(tprobens,function(f){
@@ -152,9 +151,9 @@ if(!file.exists(paste0(OUTDIR, "/set_patient-probe_EMRs.GRanges.RData"))){
    ubetasitet <- betasitet %>% dplyr::filter(probe %in% uprobeu) %>%
                                dplyr::select(selpg)
 
-   kdensPlot(meltdf=melt(tbetasitet[2:4]), pat=paste0("patient_", pg), nam="Tumor 20%", colz=c("black","red","yellow"))
-   kdensPlot(meltdf=melt(pbetasitet[2:4]), pat=paste0("patient_", pg), nam="Plasma 20%", colz=c("black","red","yellow"))
-   kdensPlot(meltdf=melt(ubetasitet[2:4]), pat=paste0("patient_", pg), nam="Urine 20%", colz=c("black","red","yellow"))
+   kdensPlot(meltdf=melt(tbetasitet[2:5]), pat=paste0("patient_", pg), nam="Tumor 20%", colz=c("forestgreen","black","red","yellow"))
+   kdensPlot(meltdf=melt(pbetasitet[2:5]), pat=paste0("patient_", pg), nam="Plasma 20%", colz=c("forestgreen","black","red","yellow"))
+   kdensPlot(meltdf=melt(ubetasitet[2:5]), pat=paste0("patient_", pg), nam="Urine 20%", colz=c("forestgreen","black","red","yellow"))
   }
 
   #set level

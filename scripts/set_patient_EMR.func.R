@@ -293,16 +293,18 @@ kdensPlot <- function(meltdf, pat, nam, colz){
   ##colour in meltdf
   colVec <- c()
   for(ff in 1:length(colevs)){
-      colVec <- c(colVec, rep(colz[ff],length=table(meltdf$Sample==colevs[ff])[[2]]))
+      colVec <- c(colVec,
+                  rep(colz[ff],
+                      length=table(meltdf$Sample==colevs[ff])[[2]]))
   }
   meltdf$Colour <- colVec
 
-  ggplot(meltdf, aes(x=Beta, group=Sample, fill=Colour)) +
-  geom_density(alpha=0.5, show.legend=TRUE) +
-  scale_fill_manual(values=colz, labels=colevs) +
+  ggplot(meltdf, aes(x=Beta)) +
+  geom_density(aes(group=Sample, fill=Sample), alpha=0.7, colour=NA) +
+  scale_fill_manual(values=unique(meltdf$Colour)) +
   labs(x="Beta Value",
        y="Density",
-       title=paste0("Beta Value Distribution, ", nam, " probes (n = ", prettyNum(dim(meltdf)[1]/3, trim=T, big.mark=","), ")"))
+       title=paste0("Beta Value Distribution, ", nam, " probes (n = ", prettyNum(dim(meltdf)[1]/length(colevs), trim=T, big.mark=","), ")"))
   ggsave(paste0(pat, ".probes.kdensity.", strsplit(nam," ")[[1]][1], ".pdf"))
 
 }

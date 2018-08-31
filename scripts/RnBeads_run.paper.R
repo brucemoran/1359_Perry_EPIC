@@ -1,7 +1,7 @@
 #! /usr/local/bin/R
 
 #source -> "http://rnbeads.mpi-inf.mpg.de/install.R"
-libs <- c("RnBeads", "tidyverse")
+libs <- c("RnBeads", "RnBeads.hg19", "RPMM", "tidyverse")
 print("Loading libraries...")
 libsLoaded <- lapply(libs,function(l){print(l);suppressWarnings(suppressMessages(library(l, character.only = TRUE)))})
 
@@ -16,12 +16,11 @@ TAG <- argsin[3]
 ANNOFILE <- argsin[4]
 
 ##prepared earlier
-sample_anno <- read_tsv(ANNOFILE)
+sample_anno <- read_csv(ANNOFILE)
 
 #set options
 rnb.options(analysis.name=TAG,
   logging=TRUE,
-  assembly=c("hg19"),
   min.group.size=3,
   qc=TRUE,
   qc.boxplots=TRUE,

@@ -20,10 +20,8 @@ This downloads the raw IDAT files (~440MB), EPIC array annotation (~570MB), and 
 
 ### Prerequisites
 
-You will need a copy of R installed, as well as required packages. These can be installed thus:
+You will need a copy of R installed, as well as required packages. These can be installed using:
 
 ```
-install.packages("BiocManager")
-library("BiocManager")
-BiocManager::install(c("GenomicRanges", "RnBeads", "FDb.InfiniumMethylation.hg19", "tidyverse", "GGally", "magrittr", "pheatmap", "mgcv", "ggplot2", "readxl", "VennDiagram", "reshape2"), update=TRUE, ask=FALSE)
+Rscript scripts/prerequisites.R
 ```
