@@ -108,21 +108,23 @@ if(!file.exists(paste0(OUTDIR, "/set_patient-probe_EMRs.GRanges.RData"))){
           B=tumour_hyper_probes,
           C=plasma_hyper_probes,
           D=urine_hyper_probes,
-          sampVec=paste0(c("Matched Normal", "Tumor", "Plasma", "Urine"), "\nHyper Probes"),
+          sampVec=c("Matched Normal", "Tumor", "Plasma", "Urine"),
+          tag="Hyper Probes",
           nam=paste0(pat.out.dir, "/patient_", patGroups[pg], ".hyper"),
           fil=c("forestgreen","black","darkred","yellow"))
     patGroupVennProbeList[[pg]][[2]] <- venn4ProbeList(A=benign_hypo_probes,
           B=tumour_hypo_probes,
           C=plasma_hypo_probes,
           D=urine_hypo_probes,
-          sampVec=paste0(c("Matched Normal", "Tumor", "Plasma", "Urine"), "\nHypo Probes"),
+          sampVec=c("Matched Normal", "Tumor", "Plasma", "Urine"),
+          tag="Hypo Probes",
           nam=paste0(pat.out.dir, "/patient_", patGroups[pg], ".hypo"),
           fil=c("forestgreen","black","darkred","yellow"))
    names(patGroupVennProbeList[[pg]]) <- c("hyper", "hypo")
 
-   ##distribution of T, U, S probes
+   ##distribution of T, U, S probes, not in benign
    #per tumour, plasma, urine
-   selpg <- c("probe", grep(paste0("_", pg), names(betasitet), value=TRUE))
+   selpg <- c("probe", grep("Benign", grep(paste0("_", pg), names(betasitet), value=TRUE), invert=T, value=T))
    selpg <- match(selpg,names(betasitet))
    tprobens <- match(c("n2","n23","n24","n234"), names(patGroupVennProbeList[[pg]][["hyper"]]))
    tprobeu <- unique(unlist(lapply(tprobens,function(f){
@@ -151,9 +153,9 @@ if(!file.exists(paste0(OUTDIR, "/set_patient-probe_EMRs.GRanges.RData"))){
    ubetasitet <- betasitet %>% dplyr::filter(probe %in% uprobeu) %>%
                                dplyr::select(selpg)
 
-   kdensPlot(meltdf=melt(tbetasitet[2:5]), pat=paste0("patient_", pg), nam="Tumor 20%", colz=c("forestgreen","black","red","yellow"))
-   kdensPlot(meltdf=melt(pbetasitet[2:5]), pat=paste0("patient_", pg), nam="Plasma 20%", colz=c("forestgreen","black","red","yellow"))
-   kdensPlot(meltdf=melt(ubetasitet[2:5]), pat=paste0("patient_", pg), nam="Urine 20%", colz=c("forestgreen","black","red","yellow"))
+   kdensPlot(meltdf=melt(tbetasitet[2:4]), pat=paste0("patient_", pg), nam="Tumor 20%", colz=c("black","red","yellow"))
+   kdensPlot(meltdf=melt(pbetasitet[2:4]), pat=paste0("patient_", pg), nam="Plasma 20%", colz=c("black","red","yellow"))
+   kdensPlot(meltdf=melt(ubetasitet[2:4]), pat=paste0("patient_", pg), nam="Urine 20%", colz=c("black","red","yellow"))
   }
 
   #set level
@@ -187,14 +189,16 @@ if(!file.exists(paste0(OUTDIR, "/set_patient-probe_EMRs.GRanges.RData"))){
         C=plasma_hyper_probes,
         D=urine_hyper_probes,
         nam=paste0(set.probe.dir,"/set.hyper"),
-        sampVec=paste0(c("Matched Normal", "Tumor", "Plasma", "Urine"), "\nHyper Probes"),
+        sampVec=c("Matched Normal", "Tumor", "Plasma", "Urine"),
+        tag="Hyper Probes",
         fil=c("forestgreen","black","darkred","yellow"))
   setProbeVennList[[2]] <- venn4ProbeList(A=benign_hypo_probes,
         B=tumour_hypo_probes,
         C=plasma_hypo_probes,
         D=urine_hypo_probes,
         nam=paste0(set.probe.dir,"/set.hypo"),
-        sampVec=paste0(c("Matched Normal", "Tumor", "Plasma", "Urine"), "\nHypo Probes"),
+        sampVec=c("Matched Normal", "Tumor", "Plasma", "Urine"),
+        tag="Hypo Probes",
         fil=c("forestgreen","black","darkred","yellow"))
   names(setProbeVennList) <- c("hyper", "hypo")
 

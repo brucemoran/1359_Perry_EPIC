@@ -42,8 +42,8 @@ eMRListFunc <- function(betavalues, bed, inVec=NULL, exVec=NULL, filterVec=NULL)
                                        end=bed$end),
                         strand=bed$strand)
       ##this defines 2kb between probes which we specify as the EMR
-      gR <- GenomicRanges::reduce(gR, min.gapwidth=2000L, with.revmap=TRUE)
-      eMR <- as_tibble(gR$revmap) %>% group_by(group) %>% filter(length(group)>2)
+      gRR <- GenomicRanges::reduce(gR, min.gapwidth=2000L, with.revmap=TRUE)
+      eMR <- as_tibble(gRR$revmap) %>% group_by(group) %>% filter(length(group)>2)
       groupLengths <- as.vector(table(eMR$group))
       eMR <- gR[unique(as.vector(eMR$group))]
       mcolseMRList <- as.list(1:length(eMR$revmap))
@@ -293,27 +293,27 @@ kdensPlot <- function(meltdf, pat, nam, colz){
   ##colour in meltdf
   colVec <- c()
   for(ff in 1:length(colevs)){
-      colVec <- c(colVec,
-                  rep(colz[ff],
-                      length=table(meltdf$Sample==colevs[ff])[[2]]))
+      colVec <- c(colVec, rep(colz[ff],length=table(meltdf$Sample==colevs[ff])[[2]]))
   }
   meltdf$Colour <- colVec
 
-  ggplot(meltdf, aes(x=Beta)) +
-  geom_density(aes(group=Sample, fill=Sample), alpha=0.7, colour=NA) +
-  scale_fill_manual(values=unique(meltdf$Colour)) +
+  ggplot(meltdf, aes(x=Beta, group=Sample, fill=Colour)) +
+  geom_density(alpha=0.5, show.legend=TRUE) +
+  scale_fill_manual(values=colz, labels=colevs) +
   labs(x="Beta Value",
        y="Density",
-       title=paste0("Beta Value Distribution, ", nam, " probes (n = ", prettyNum(dim(meltdf)[1]/length(colevs), trim=T, big.mark=","), ")"))
+       title=paste0("Beta Value Distribution, ", nam, " probes (n = ", prettyNum(dim(meltdf)[1]/3, trim=T, big.mark=","), ")"))
   ggsave(paste0(pat, ".probes.kdensity.", strsplit(nam," ")[[1]][1], ".pdf"))
 
 }
 
-venn4ProbeList <- function(A, B, C, D, sampVec, nam, listo, fil=NULL){
+venn4ProbeList <- function(A, B, C, D, sampVec, tag, nam, listo, fil=NULL){
   if(is.null(fil)){
     print("No fill colours provided, defaults will be used!")
     fil <- c("red", "green", "dodgerblue", "yellow")
   }
+  sampleVec <- unlist(lapply(sampVec, function(f){gsub(" ","-",f)}))
+  sampVec <- paste0(sampVec,paste0("\n", tag))
 
   area1 <- length(A)
   area2 <- length(B)
@@ -366,7 +366,12 @@ venn4ProbeList <- function(A, B, C, D, sampVec, nam, listo, fil=NULL){
   dev.off()
 
   listo <- list(n1,n2,n3,n4,n12,n13,n14,n23,n24,n34,n123,n124,n134,n234,n1234)
-  names(listo) <- c("n1","n2","n3","n4","n12","n13","n14","n23","n24","n34","n123","n124","n134","n234","n1234")
+  nlisto <- c("n1","n2","n3","n4","n12","n13","n14","n23","n24","n34","n123","n124","n134","n234","n1234")
+  names(listo) <- unlist(lapply(seq_along(nlisto), function(f){
+    nlist <- paste(sampleVec[as.numeric(grep("n",strsplit(nlisto[f], "")[[1]], invert=T, value=T))], collapse="_")
+    write.table(listo[[f]], file=paste0(nam, ".", nlist , ".probes.txt"))
+    return(nlist)
+  }))
   return(listo)
 }
 
