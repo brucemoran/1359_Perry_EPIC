@@ -22,5 +22,5 @@ This downloads the raw IDAT files (~440MB), EPIC array annotation (~570MB), and 
 You will need a copy of R installed (3.5.0 tested and working, other versions unknown), as well as required R packages. These can be installed using the the script specified below. N.B. that this uses BiocManager, which may not be available to older versions of R.
 
 ```
-Rscript scripts/prerequisites.R
+Rscript ./scripts/prerequisites.R
 ```
