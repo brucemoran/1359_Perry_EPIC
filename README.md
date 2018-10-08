@@ -8,7 +8,6 @@ In a Linux environment simply issue the commands (N.B. for OSX you can use 'grea
 
 ```
 git clone https://github.com/brucemoran/1359_Perry_EPIC
-cd 1359_Perry_EPIC
 sh scripts/run_RnBeads-probeEMR-corrMatrix.sh \
    "$(readlink -e ./1359_Perry_EPIC)" \
    "$(readlink -e ./1359_Perry_EPIC/scripts)" \
