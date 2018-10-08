@@ -367,11 +367,11 @@ venn4ProbeList <- function(A, B, C, D, sampVec, tag, nam, listo, fil=NULL){
 
   listo <- list(n1,n2,n3,n4,n12,n13,n14,n23,n24,n34,n123,n124,n134,n234,n1234)
   nlisto <- c("n1","n2","n3","n4","n12","n13","n14","n23","n24","n34","n123","n124","n134","n234","n1234")
-  names(listo) <- unlist(lapply(seq_along(nlisto), function(f){
+  unlist(lapply(seq_along(nlisto), function(f){
     nlist <- paste(sampleVec[as.numeric(grep("n",strsplit(nlisto[f], "")[[1]], invert=T, value=T))], collapse="_")
-    write.table(listo[[f]], file=paste0(nam, ".", nlist , ".probes.txt"))
-    return(nlist)
+    write.table(listo[[f]], file=paste0(nam, ".", nlist , ".probes.txt"), row=F, col=F, quote=F)
   }))
+  names(listo) <- nlisto
   return(listo)
 }
 

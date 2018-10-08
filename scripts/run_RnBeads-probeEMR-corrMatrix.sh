@@ -9,15 +9,15 @@ RUNID=$3
 ANNOFILE=$4
 RONLY=$5
 
-ANALDIR="$BASEDIR/analysis"
+OUTDIR="$BASEDIR/analysis"
 DATADIR="$BASEDIR/data"
 IDATDIR="$DATADIR/IDAT_FILES"
-ANNODIR="$BASEDIR/EPIC_ANNO"
+ANNODIR="$DATADIR/EPIC_ANNO"
 ANNOFILE="$DATADIR/sample_annotation.csv"
 
 #mkdirs, test if made
-if [[ ! -d "$ANALDIR" ]];then
-  mkdir -p "$ANALDIR"
+if [[ ! -d "$OUTDIR" ]];then
+  mkdir -p "$OUTDIR"
 fi
 
 ######################
@@ -32,13 +32,13 @@ if [[ $RONLY == "" ]];then
         ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3362nnn/GSM33624${x}/suppl/*
     done
   else
-    echo "Found $IDATDIR, running analysis..."
+    echo -e "Found $IDATDIR, delete to rerun download of data\nRunning analysis..."
   fi
 else
-  echo "Downloading BMIQ data..."
-  wget -P "$BASEDIR/analysis/$RUNID" \
+  echo "IDAT downloads skipped\nDownloading BMIQ data..."
+  wget -P "$OUTDIR/RnBeads" \
     ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE119nnn/GSE119260/suppl/*BMIQ*
-  mv "$BASEDIR/analysis/$RUNID/*BMIQ*" "$BASEDIR/analysis/$RUNID/$RUNID.methylation_per_sample.sites.tsv"
+  mv "$OUTDIR/RnBeads/*BMIQ*" "$OUTDIR/RnBeads/$RUNID.methylation_per_sample.sites.tsv"
 fi
 
 ##########################
@@ -67,8 +67,8 @@ Rscript --vanilla "$SCRIPTDIR/set_patient_EMR.callerv2.R" \
   "$BASEDIR" \
   "$SCRIPTDIR" \
   "$RUNID" \
-  "$BASEDIR/EPIC_ANNO/MethylationEPIC_v-1-0_B4.Legacy_B2.bed" \
-  "$BASEDIR/analysis/$RUNID/$RUNID.methylation_per_sample.sites.tsv"
+  "$DATADIR/EPIC_ANNO/MethylationEPIC_v-1-0_B4.Legacy_B2.bed" \
+  "$OUTDIR/RnBeads/$RUNID.methylation_per_sample.sites.tsv"
 
 ####################
 ## 4: Other plots ##

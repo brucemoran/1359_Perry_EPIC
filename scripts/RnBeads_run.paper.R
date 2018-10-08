@@ -19,7 +19,7 @@ ANNOFILE <- argsin[4]
 sample_anno <- read_csv(ANNOFILE)
 
 #set options
-rnb.options(analysis.name=TAG,
+rnb.options(analysis.name="RnBeads",
   logging=TRUE,
   min.group.size=3,
   qc=TRUE,
@@ -47,7 +47,7 @@ rnb.options(analysis.name=TAG,
   normalization.method="bmiq",
   normalization.background.method="none")
 
-reports.dir <- paste0(BASEDIR, "/analysis/", TAG)
+reports.dir <- paste0(BASEDIR, "/analysis/RnBeads")
 rnb.run.analysis(dir.reports=reports.dir,
                  sample.sheet=as.data.frame(sample_anno),
                  data.dir=IDATDIR,

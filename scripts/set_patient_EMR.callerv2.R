@@ -183,7 +183,9 @@ if(!file.exists(paste0(OUTDIR, "/set_patient-probe_EMRs.GRanges.RData"))){
   plasma_hypo_probes <- setProbeList[["Plasma"]]$hypo$probe
   urine_hyper_probes <- setProbeList[["Urine"]]$hyper$probe
   urine_hypo_probes <- setProbeList[["Urine"]]$hypo$probe
+
   setwd(set.probe.dir)
+
   setProbeVennList[[1]] <- venn4ProbeList(A=benign_hyper_probes,
         B=tumour_hyper_probes,
         C=plasma_hyper_probes,
