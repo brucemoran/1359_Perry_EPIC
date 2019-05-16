@@ -44,8 +44,12 @@ fi
 ##########################
 ## 0.1: EPIC Annotation ##
 ##########################
-echo "Generating EPIC annotation BED file..."
-sh "$SCRIPTDIR/EPIC_annotation_maker.sh" "$ANNODIR"
+if [[ -e "$ANNOFILE" ]]; then
+  echo "Generating EPIC annotation BED file..."
+  sh "$SCRIPTDIR/EPIC_annotation_maker.sh" "$ANNODIR"
+else
+  echo "Found EPIC annotation BED file $ANNOFILE, delete to rerun, proceeding..."
+fi
 
 ####################
 ## 2: RnBeads Run ##
@@ -62,7 +66,7 @@ fi
 ########################
 ## 3: Probe, EMR sets ##
 ########################
-echo "Generating probe, EMR sets per sample-type and patient"
+echo "Generating probe, EMR sets per sample-type and patient..."
 Rscript --vanilla "$SCRIPTDIR/set_patient_EMR.callerv2.R" \
   "$BASEDIR" \
   "$SCRIPTDIR" \
@@ -78,3 +82,13 @@ Rscript --vanilla "$SCRIPTDIR/correlation_matrix_liquids-450K_GAM.R" \
   "$BASEDIR" \
   "$SCRIPTDIR" \
   "$RUNID"
+
+###################
+## 5: meth_atlas ##
+###################
+echo "Running meth_atlas"
+sh "$SCRIPTDIR/meth_atlas_analysis.sh" "$BASEDIR" "$OUTDIR/RnBeads/$RUNID.methylation_per_sample.sites.tsv"
+Rscript --vanilla "$SCRIPTDIR/meth_atlas_analysis.R" \
+  "$BASEDIR" \
+  "$OUTDIR/RnBeads/$RUNID.methylation_per_sample.sites.tsv" \
+  "$DATADIR/meth_atlas/reference_atlas.csv"

@@ -45,7 +45,7 @@ eMRListFunc <- function(betavalues, bed, inVec=NULL, exVec=NULL, filterVec=NULL)
       gRR <- GenomicRanges::reduce(gR, min.gapwidth=2000L, with.revmap=TRUE)
       eMR <- as_tibble(gRR$revmap) %>% group_by(group) %>% filter(length(group)>2)
       groupLengths <- as.vector(table(eMR$group))
-      eMR <- gR[unique(as.vector(eMR$group))]
+      eMR <- gRR[unique(as.vector(eMR$group))]
       mcolseMRList <- as.list(1:length(eMR$revmap))
       bedanno <- as.vector(bed$anno)
       print("Annotating...")

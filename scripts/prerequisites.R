@@ -1,6 +1,6 @@
 #! R
 ##install prerequisite libraries
-libs <- c("RnBeads.hg19","RnBeads","RPMM","tidyverse","magrittr",	"pheatmap","mgcv","readxl","GenomicRanges","reshape2","ggplot2","VennDiagram")
+libs <- c("RnBeads.hg19","RnBeads","RPMM","tidyverse","magrittr",	"pheatmap","mgcv","readxl","GenomicRanges","reshape2","ggplot2","VennDiagram", "ggdendro")
 
 ##install the great installer
 install.packages("BiocManager",
